@@ -1,0 +1,59 @@
+# PayWatch Docker Compose Configuration
+
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - SCHEDULER_ENABLED=true
+      - TRANSACTION_GENERATOR_INTERVAL=15
+      - FAILURE_RATE_THRESHOLD=0.05
+      - LARGE_TRANSACTION_THRESHOLD=10000
+      - SETTLEMENT_DELAY_THRESHOLD=24
+      - ENVIRONMENT=production
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app/backend
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=paywatch
+      - POSTGRES_PASSWORD=paywatch_dev
+      - POSTGRES_DB=paywatch
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
+
+networks:
+  default:
+    name: paywatch-network

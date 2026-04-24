@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+python-dotenv
+supabase
+postgrest
+realtime
+storage3
+gotrue
+httpx
+APScheduler
+pytz
+pydantic
+pydantic-settings
+python-dateutil
+psycopg2-binary
+requests
+cors
