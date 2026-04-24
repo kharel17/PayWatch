@@ -1,10 +1,6 @@
 # 🔷 PayWatch - Payment Transaction Monitoring & Reconciliation Dashboard
 
-![PayWatch Banner](https://img.shields.io/badge/PayWatch-Payment%20Monitoring-blue?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
----
 
 ## 📋 Overview
 
